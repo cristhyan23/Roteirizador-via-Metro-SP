@@ -6,7 +6,7 @@ class LinhasStatus:
     def __init__(self):
         self.url = 'https://www.viamobilidade.com.br/'
 
-    def status_linha(self):
+    def get_status_linha(self):
         response = requests.get(self.url)
         response.encoding = 'utf-8'  # Garantir que o encoding está correto
         try:
@@ -24,18 +24,20 @@ class LinhasStatus:
                         if wrapper:
                             detalhe = wrapper.find('p').text.strip() if wrapper.find('p') else ''
                         else:
-                            linha_info = ''
                             detalhe = ''
                         data.append([linha_numero, linha_title, linha_situacao, detalhe])
                 
-                # Criar um DataFrame
-                df = pd.DataFrame(data, columns=['Linha Número', 'Título', 'Situação', 'Detalhe'])                
-                df.to_csv('files/status_linhas.csv',index=False,encoding='utf-8')    
+                return data 
             else:
                 print(f'Erro ao acessar a página. Status code: {response.status_code}')
         except  Exception as e:
             print(f"Ocorreu um erro de excessão: {e}")
 
+    def save_csv(self,data):
+        # Criar um DataFrame
+        df = pd.DataFrame(data, columns=['Linha Número', 'Título', 'Situação', 'Detalhe'])                
+        df.to_csv('files/status_linhas.csv',index=False,encoding='utf-8')   
 if __name__ == "__main__":
     a = LinhasStatus()
-    a.status_linha()
+    data = a.get_status_linha()
+    a.save_csv(data)
