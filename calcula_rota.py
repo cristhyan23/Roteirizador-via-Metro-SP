@@ -16,7 +16,7 @@ class CalcularRota:
             'origin': self.endOrigin,
             'destination': self.endDest,
             'mode': 'transit',  # Modo de transporte público
-            'avoid':'indoor',
+            'avoid': 'indoor', #evita caminhadas em grandes terminais
             'traffic_model':'pessimistic',
             'transit_mode':'train',
             'unit':'metric',
