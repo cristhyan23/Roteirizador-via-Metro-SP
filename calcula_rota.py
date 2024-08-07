@@ -46,14 +46,14 @@ if __name__ == "__main__":
 
     analise = CalcularRota(endOrigin, endDest)
     rotas = analise.calcular_melhor_rota()
-    print(rotas)
+    #print(rotas)
     if rotas:
         
         for rota in rotas:
             print(f"Resumo da rota: {rota['summary']}")
-            print(f"Ponto de Partida: {rota['start_address']}")
-            print(f"Ponto de Chegada: {rota['end_addres']}")
-            print(f"Distância da rota: {rota['legs']['distance']['text']}")
+            print(f"Ponto de Partida: {rota['legs'][0]['start_address']}")
+            print(f"Ponto de Chegada: {rota['legs'][0]['end_address']}")
+            print(f"Distância da rota: {rota['legs'][0]['distance']['text']}")
             print(f"Tempo da rota: {rota['legs'][0]['duration']['text']}")
 
             for leg in rota['legs']:
