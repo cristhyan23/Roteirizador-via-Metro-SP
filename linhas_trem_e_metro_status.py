@@ -36,6 +36,6 @@ class LinhasStatus:
         except  Exception as e:
             print(f"Ocorreu um erro de excessão: {e}")
 
-        
-a = LinhasStatus()
-a.status_linha()
+if __name__ == "__main__":
+    a = LinhasStatus()
+    a.status_linha()
