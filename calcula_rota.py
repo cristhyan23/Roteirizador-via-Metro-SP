@@ -4,7 +4,7 @@ import os
 import requests
 import json
 load_dotenv() # Carregar variáveis de ambiente do arquivo .env
-class AnaliseDistancia:
+class CalcularRota:
     def __init__(self,endOrigin,endDestination):
         self.api_key = os.getenv('API_KEY')
         self.api_url = f'https://maps.googleapis.com/maps/api/directions/json'
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     endOrigin = "Rua Santa Ana, 19 Residencial Sol Nascente - SP"
     endDest = "Av. Angélica, 2466 - 5º andar - Bela Vista, São Paulo - SP, 01228-200"
 
-    analise = AnaliseDistancia(endOrigin, endDest)
+    analise = CalcularRota(endOrigin, endDest)
     rotas = analise.calcular_melhor_rota()
     print(rotas)
     if rotas:

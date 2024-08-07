@@ -12,6 +12,7 @@ class EstacoesLista:
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 linhas = soup.find_all('div', class_='row line-list')
+                print(linhas)
                 data = {}
                 for linha in linhas:
                     colunas = linha.find_all("div", class_="col-4")
