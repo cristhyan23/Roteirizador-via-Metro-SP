@@ -1,6 +1,8 @@
+#-- coding:utf-8 --
 from dotenv import load_dotenv
 import os
 import requests
+import json
 load_dotenv() # Carregar variáveis de ambiente do arquivo .env
 class AnaliseDistancia:
     def __init__(self,endOrigin,endDestination):
@@ -44,18 +46,27 @@ if __name__ == "__main__":
 
     analise = AnaliseDistancia(endOrigin, endDest)
     rotas = analise.calcular_melhor_rota()
-
+    print(rotas)
     if rotas:
+        
         for rota in rotas:
             print(f"Resumo da rota: {rota['summary']}")
+            print(f"Ponto de Partida: {rota['start_address']}")
+            print(f"Ponto de Chegada: {rota['end_addres']}")
+            print(f"Distância da rota: {rota['legs']['distance']['text']}")
+            print(f"Tempo da rota: {rota['legs'][0]['duration']['text']}")
+
             for leg in rota['legs']:
                 for step in leg['steps']:
                     # Imprimindo as instruções e a distância
-                    print(f"{step['html_instructions']} ({step['distance']['text']})")
+                    print(f"{step['html_instructions']} ({step['distance']['text']} - {step['duration']['text']})")
                     # Adicionalmente, verificando se é um passo de trânsito e imprimindo o local de desembarque
                     if 'transit_details' in step:
-                        print(f"Embarque em: {step['transit_details']['departure_stop']['name']}")
-                        print(f"Desembarque em: {step['transit_details']['arrival_stop']['name']}")
-                        print(f"Em direção a: {step['transit_details']['headsign']}")
+                        transit_details = step['transit_details']
+                        print(f"Embarque em: {transit_details['departure_stop']['name']}")
+                        print(f"Desembarque em: {transit_details['arrival_stop']['name']}")
+                        print(f"Em direção a: {transit_details['headsign']}")
+                        print(f"Linha: {transit_details['line']['name']}")
+                        print(f"Número de estações até o destino: {transit_details['num_stops']}")
     else:
         print("Não foi possível calcular a rota.")
