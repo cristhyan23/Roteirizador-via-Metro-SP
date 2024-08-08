@@ -39,7 +39,6 @@ class CalcularRota:
         return None
 
 # Exemplo de uso:
-# Exemplo de uso:
 if __name__ == "__main__":
     endOrigin = "Rua Santa Ana, 19 Residencial Sol Nascente - SP"
     endDest = "Av. Angélica, 2466 - 5º andar - Bela Vista, São Paulo - SP, 01228-200"
@@ -47,26 +46,4 @@ if __name__ == "__main__":
     analise = CalcularRota(endOrigin, endDest)
     rotas = analise.calcular_melhor_rota()
     #print(rotas)
-    if rotas:
-        
-        for rota in rotas:
-            print(f"Resumo da rota: {rota['summary']}")
-            print(f"Ponto de Partida: {rota['legs'][0]['start_address']}")
-            print(f"Ponto de Chegada: {rota['legs'][0]['end_address']}")
-            print(f"Distância da rota: {rota['legs'][0]['distance']['text']}")
-            print(f"Tempo da rota: {rota['legs'][0]['duration']['text']}")
-
-            for leg in rota['legs']:
-                for step in leg['steps']:
-                    # Imprimindo as instruções e a distância
-                    print(f"{step['html_instructions']} ({step['distance']['text']} - {step['duration']['text']})")
-                    # Adicionalmente, verificando se é um passo de trânsito e imprimindo o local de desembarque
-                    if 'transit_details' in step:
-                        transit_details = step['transit_details']
-                        print(f"Embarque em: {transit_details['departure_stop']['name']}")
-                        print(f"Desembarque em: {transit_details['arrival_stop']['name']}")
-                        print(f"Em direção a: {transit_details['headsign']}")
-                        print(f"Linha: {transit_details['line']['name']}")
-                        print(f"Número de estações até o destino: {transit_details['num_stops']}")
-    else:
-        print("Não foi possível calcular a rota.")
+   
