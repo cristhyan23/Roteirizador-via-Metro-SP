@@ -43,8 +43,8 @@ class DescreveRoteiro:
 
 if __name__ == "__main__":
     from calcula_rota import CalcularRota
-    endOrigin = "Rua Santa Ana, 19 Residencial Sol Nascente - SP"
-    endDest = "Av. Angélica, 2466 - 5º andar - Bela Vista, São Paulo - SP, 01228-200"
+    endOrigin = "Av. Miguel Ignácio Curi, 111 - Artur Alvim, São Paulo - SP, 08295-005"
+    endDest = "Praça Roberto Gomes Pedrosa, 1 - Morumbi, São Paulo - SP, 05653-070"
     calcular_rota = CalcularRota(endOrigin,endDest)
     rota = calcular_rota.calcular_melhor_rota()
     roteiro = DescreveRoteiro(rota)
