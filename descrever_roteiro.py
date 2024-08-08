@@ -35,7 +35,7 @@ class DescreveRoteiro:
                         f"Linha: {transit_details['line']['name']} \n"
                         f"Número de estações até o destino: {transit_details['num_stops']}"
                     )
-                        decricao_rota[index] =[texto_instrucoes, texto_passos]
+                        decricao_rota[f"step: {index}"] =[texto_instrucoes, texto_passos]
             return resumo_rota,decricao_rota
         else:
             print("Não foi possível calcular a rota.")
