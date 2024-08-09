@@ -20,13 +20,7 @@ class DescreveRoteiroRota:
                     similaridade = fuzz.ratio(valor, estacao_rota)
                     if similaridade >= limiar_similaridade:
                         colunas_encontradas.append(coluna)
-                        break
-                    
-            # Identificar colunas onde o valor está presente
-            #colunas_com_valor = df_estacoes.apply(lambda col: col.isin([estacao_rota])).any()
-            # Filtrando as colunas onde o valor é True
-            #colunas_encontradas = colunas_com_valor[colunas_com_valor].index.tolist()
-            
+                        break        
             return colunas_encontradas
         except Exception as e:
             print(f"Error encontrado {e}")
