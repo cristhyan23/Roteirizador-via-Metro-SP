@@ -15,6 +15,7 @@ class HumanizaResposta:
     def humanizar_resposta_rota(self,resumo_roteiro,descricao_roteiro):
         prompt = f"""
         Sua função é gerar instruções detalhadas para um usuário que deseja realizar um trajeto de metrô. Você receberá um resumo do trajeto e um dicionário com a descrição detalhada de cada etapa.
+        **Se os endereços de origem e destino for diferente da região metropolitana de São Paulo , informar que você não poderá efetuar esse trajeto**
 **Dados de Entrada:**
 * **Resumo do trajeto:** Uma breve descrição do ponto de partida, destino e principais pontos de interesse.
 * **Descrição detalhada:** Um dicionário onde cada chave representa uma etapa do trajeto e o valor associado contém informações como:
@@ -53,8 +54,10 @@ Descrição detalhada = {descricao_roteiro}
 if __name__ == "__main__":
     from calcula_rota import CalcularRota
     from descrever_roteiro import DescreveRoteiroRota
-    endOrigin = "Av. Miguel Ignácio Curi, 111 - Artur Alvim, São Paulo - SP, 08295-005"
-    endDest = "Praça Roberto Gomes Pedrosa, 1 - Morumbi, São Paulo - SP, 05653-070"
+    endOrigin = "Av. dos Autonomistas, 896 - Vila Yara, Osasco - SP, 06020-010"
+    endDest = "Av. Prof. Fonseca Rodrigues, 2001 - Alto de Pinheiros, São Paulo - SP, 05317-020"
+    
+    # CALL NESSEÁRIO PARA RODAR O SISTEMA
     calcular_rota = CalcularRota(endOrigin,endDest)
     rota = calcular_rota.calcular_melhor_rota()
     roteiro = DescreveRoteiroRota(rota)
