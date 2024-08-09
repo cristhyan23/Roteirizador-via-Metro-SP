@@ -1,4 +1,4 @@
-#-- coding:utf-8 --
+# coding: utf-8
 from dotenv import load_dotenv
 import os
 import requests
@@ -6,7 +6,7 @@ import json
 load_dotenv() # Carregar variáveis de ambiente do arquivo .env
 class CalcularRota:
     def __init__(self,endOrigin,endDestination):
-        self.api_key = os.getenv('API_KEY')
+        self.api_key = os.getenv('MAPS_API_KEY')
         self.api_url = f'https://maps.googleapis.com/maps/api/directions/json'
         self.endOrigin = endOrigin
         self.endDest = endDestination

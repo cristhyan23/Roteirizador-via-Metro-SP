@@ -1,4 +1,5 @@
-#-- coding:utf-8 --
+# coding: utf-8
+import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -13,8 +14,8 @@ class EstacoesLista:
         corrected_html_content = re.sub(r'<li>', r'</li><li>', corrected_html_content)  # Adiciona </li> antes de cada <li> novo
         #corrected_html_content = re.sub(r'^</li>', r'', corrected_html_content)  # Remove primeiro fechamento </li> incorreto
         return corrected_html_content
-    
-    def descricao_estacoes(self):
+    @property
+    def get_estacoes(self):
         response = requests.get(self.url)
         response.encoding = 'utf-8'  # Garantir que o encoding está correto
         try:
@@ -41,11 +42,21 @@ class EstacoesLista:
                                     data[nome_linha].extend(lista_estacoes)
                                 else:
                                     data[nome_linha] = lista_estacoes
-                print(data)
+                return data
             else:
                 print('Não foi possível obter a lista de linhas')
         except Exception as e:
             print(f"Ocorreu um erro de exceção: {e}")
+    
+    def gera_dataframe_lista_estacoes(self,data):
+        max_length = max(len(lst) for lst in data.values())
+        for key in data:
+            if len(data[key]) < max_length:
+                data[key].extend([None] * (max_length - len(data[key])))
+        
+        df = pd.DataFrame(data,columns=data.keys())
+        df.to_csv('files/lista_estacoes.csv',index=False)
+        return df
 
 if __name__ == "__main__":
     a = EstacoesLista()
