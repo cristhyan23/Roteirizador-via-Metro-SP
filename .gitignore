@@ -1,4 +1,8 @@
 *.env
 .env
 roteirizador-via-metro-sp-6bca786c4c63.json
-__pycache__
+__pycache__/calcula_rota.cpython-312.pyc
+__pycache__/calcula_rota.cpython-312.pyc
+__pycache__/descrever_roteiro.cpython-312.pyc
+__pycache__/linhas_trem_e_metro_status.cpython-312.pyc
+__pycache__/lista_estacoes.cpython-312.pyc
