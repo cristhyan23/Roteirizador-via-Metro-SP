@@ -1,5 +1,6 @@
 from flask import render_template, request, flash, send_from_directory
 import os
+import json
 from dotenv import load_dotenv
 from calcula_rota import CalcularRota
 from descrever_roteiro import DescreveRoteiroRota
@@ -11,6 +12,12 @@ google_maps_api_key = os.getenv('MAPS_API_KEY')
 # Rota de início
 @app.route("/")
 def index():
+    # Cria um objeto JSON vazio
+    dados_vazios = {}
+    with open('files/pontos.json', 'w') as arquivo:
+        # Escreve o objeto JSON vazio no arquivo
+        json.dump(dados_vazios, arquivo, indent=4)
+
     return render_template('index.html',api_key=google_maps_api_key)
 
 @app.route('/files/<path:path>')
@@ -45,5 +52,4 @@ def gerar_roteiro():
     humaniza = HumanizaResposta()
     roteiro_final = humaniza.humanizar_resposta_rota(resumo_rota, descricao_rota)
     coordenadas = calcula_rota.gerar_lat_e_long_enderecos(rota)
-    print(coordenadas)
     return render_template('index.html', roteiro=roteiro_final,coordenadas=coordenadas,endOrigem=endOrigim,endDestino=endDestino,api_key=google_maps_api_key)
