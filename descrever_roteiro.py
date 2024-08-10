@@ -25,7 +25,7 @@ class DescreveRoteiroRota:
         except Exception as e:
             print(f"Error encontrado {e}")
             return None
-#busca o status da linha no arquivo csv salvo pela classe LinhaStatus
+#busca o status da no arquivo csv salvo pela classe LinhaStatus
     def captura_status_estacao(self,colunas_encontradas,limiar_similaridade=80):
         linhas_status = LinhasStatus()
         file = linhas_status.get_status_linha()

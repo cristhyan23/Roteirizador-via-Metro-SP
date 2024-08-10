@@ -37,16 +37,7 @@ class LinhasStatus:
     def generate_data_frame(self,data):
         # Criar um DataFrame
         try:
-           # nome_linhas_correta = ['Linha 1-Azul','Linha 2-Verde',
-            #                    'Linha 3-Vermelha','Linha 4-Amarela','Linha 5-Lilás',
-            #                    'Linha 7-Rubi','Linha 8-Diamante','Linha 9-Esmeralda',
-            #                    'Linha 10-Turquesa','Linha 11-Coral','Linha 12-Safira',
-            #                    'Linha 13-Jade','Linha 15-Prata']
-            
             df = pd.DataFrame(data, columns=['Linha Número', 'Título', 'Situação', 'Detalhe'])  
-            #de_para_nomes_ = {desejado: unificado for desejado, unificado in
-             #                   zip(df['Título'], nome_linhas_correta)}
-            #df['Título'] = df['Título'].map(de_para_nomes_)
             df.to_csv('files/status_linhas.csv',index=False,encoding='utf-8')
             return df
         except KeyError as e:
