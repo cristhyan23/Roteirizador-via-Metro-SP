@@ -58,8 +58,6 @@ Descrição detalhada = {descricao_roteiro}
             resultado = self.aplicar_negrito(resultado)
             return resultado
 
-
-
 if __name__ == "__main__":
     from calcula_rota import CalcularRota
     from descrever_roteiro import DescreveRoteiroRota
