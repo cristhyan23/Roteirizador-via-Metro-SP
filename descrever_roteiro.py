@@ -26,15 +26,21 @@ class DescreveRoteiroRota:
             print(f"Error encontrado {e}")
             return None
 #busca o status da linha no arquivo csv salvo pela classe LinhaStatus
-    def captura_status_estacao(self,colunas_encontradas):
+    def captura_status_estacao(self,colunas_encontradas,limiar_similaridade=80):
         linhas_status = LinhasStatus()
         file = linhas_status.get_status_linha()
         df = linhas_status.generate_data_frame(file)
         status_linha = []
         #ler arquivo
+        linhas_filtro =[]
         try:
-            df_filtrado = df[df['Título'].isin(colunas_encontradas)]
-            df_filtrado = df_filtrado.drop("Linha Número",axis=1)
+            for valor in df['Título']:
+                similaridade = fuzz.ratio(valor,colunas_encontradas)
+                if similaridade >= limiar_similaridade:
+                    linhas_filtro.append(valor)
+                    break
+                df_filtrado = df[df['Título'].isin(linhas_filtro)]
+                df_filtrado = df_filtrado.drop("Linha Número",axis=1)
         except KeyError:
             print("Valores não encontrados na base")
             return []
