@@ -1,7 +1,10 @@
 # coding: utf-8
 import google.generativeai as genai
 import os
+import re
 from dotenv import load_dotenv
+import json
+import ast
 load_dotenv()
 
 class HumanizaResposta:
@@ -11,12 +14,19 @@ class HumanizaResposta:
         genai.configure(api_key=os.environ["AI_API_KEY"])
         # The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
         self.model = genai.GenerativeModel(self.gemini_model)
+    
+    def aplicar_negrito(self,texto):
+        # Substitui os textos entre ** por <strong>texto</strong>
+        return re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', texto)
 
     def humanizar_resposta_rota(self,resumo_roteiro,descricao_roteiro):
         prompt = f"""
         Sua função é gerar instruções detalhadas para um usuário que deseja realizar um trajeto de metrô. Você receberá um resumo do trajeto e um dicionário com a descrição detalhada de cada etapa.
         **Se os endereços de origem e destino for diferente da região metropolitana de São Paulo , informar que você não poderá efetuar esse trajeto**
-**Dados de Entrada:**
+        ** Para parte do roteiro que precise pegar linha de onibus não informar o status da linha e nem informações como se existe escalas rolantes, elevadores , etc...**
+        ** adicionar tag html para fazer a divisão do roteiro entre paragrafos **
+        ** Não adicione título do roteiro**
+        **Dados de Entrada:**
 * **Resumo do trajeto:** Uma breve descrição do ponto de partida, destino e principais pontos de interesse.
 * **Descrição detalhada:** Um dicionário onde cada chave representa uma etapa do trajeto e o valor associado contém informações como:
     * Estação de origem e destino
@@ -35,7 +45,6 @@ Resumo do trajeto = {resumo_roteiro}
 Descrição detalhada = {descricao_roteiro}
 
 """
-
         resposta = self.model.generate_content(
             [prompt],
             stream=True
@@ -43,13 +52,14 @@ Descrição detalhada = {descricao_roteiro}
         resposta.resolve()
         resultado = ""
         try:
-            #for chunk in resposta:
-            #    resultado += chunk.text
             resultado = resposta.text
         except ValueError:
             return "Não foi possível gerar o roteiro"
         if resultado:
+            resultado = self.aplicar_negrito(resultado)
             return resultado
+
+
 
 if __name__ == "__main__":
     from calcula_rota import CalcularRota
@@ -63,5 +73,5 @@ if __name__ == "__main__":
     roteiro = DescreveRoteiroRota(rota)
     resumo_rota,descricao_rota = roteiro.passo_a_passo_rota()
     humaniza = HumanizaResposta()
-    print(humaniza.humanizar_resposta_rota(resumo_rota,descricao_rota))
+
 

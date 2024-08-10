@@ -11,6 +11,19 @@ class CalcularRota:
         self.endOrigin = endOrigin
         self.endDest = endDestination
 
+    def gerar_lat_e_long_enderecos(self,data):
+        lista_final = []
+        # Adicionar etapas ao mapa
+        for leg in data[0]['legs']:
+            for step in leg['steps']:
+                start_coords = [step['start_location']['lat'], step['start_location']['lng']]
+                lista_final.append(start_coords)
+                end_coords = [step['end_location']['lat'], step['end_location']['lng']]
+                lista_final.append(end_coords)
+
+        return lista_final
+        
+
     def calcular_melhor_rota(self):
         params = {
             'origin': self.endOrigin,
@@ -46,4 +59,5 @@ if __name__ == "__main__":
     analise = CalcularRota(endOrigin, endDest)
     rotas = analise.calcular_melhor_rota()
     #print(rotas)
+    print(analise.gerar_lat_e_long_enderecos(rotas))
    

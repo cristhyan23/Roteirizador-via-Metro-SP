@@ -6,3 +6,7 @@ __pycache__/calcula_rota.cpython-312.pyc
 __pycache__/descrever_roteiro.cpython-312.pyc
 __pycache__/linhas_trem_e_metro_status.cpython-312.pyc
 __pycache__/lista_estacoes.cpython-312.pyc
+__pycache__/main.cpython-312.pyc
+__pycache__/views.cpython-312.pyc
+__pycache__/humanizar_resposta.cpython-312.pyc
+__pycache__/calcula_rota.cpython-312.pyc
