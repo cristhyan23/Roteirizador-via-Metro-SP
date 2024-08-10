@@ -24,9 +24,9 @@ Este projeto é uma aplicação web Flask que ajuda os usuários a encontrar a m
 **Instalação:**
 
 1. **Instale o Python:** Certifique-se de ter o Python instalado em sua máquina.
-2. **Clone o repositório:** Clone o repositório deste projeto para sua máquina local usando o comando: `git clone https://github.com/seu-usuario/roteiro-viagem`.
+2. **Clone o repositório:** Clone o repositório deste projeto para sua máquina local usando o comando: `git clone https://github.com/cristhyan23/Roteirizador-via-Metro-SP'.
 3. **Crie um arquivo `.env`:** Copie o arquivo `.env.example` para `.env` e adicione suas chaves de API do Google Maps e Google Generative AI.
-4. **Instale as dependências:** Execute o comando `pip install -r requirements.txt` para instalar as bibliotecas necessárias.
+4. **Instale as dependências:** Instale as bibliotecas necessárias.
 
 **Execução:**
 
