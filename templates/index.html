@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roteiro de Viagem - Transporte Público</title>
     <link rel="stylesheet" href="static/css/styles.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&libraries=places&callback=initMap&loading=async" async defer></script>
     <style>
         #map {
             width: 600px; 
@@ -18,11 +18,11 @@
         <form action="/gerar_roteiro" method="POST">
             <div class="form-field">
                 <label for="endOrigem">Endereço Origem</label>
-                <input type="text" name="endOrigem" id="endOrigem" placeholder="Endereço Origem" required />
+                <input type="text" name="endOrigem" id="endOrigem" value="{{ endOrigem|safe }}" onfocus="this.value == '{{ endOrigem }}' ? this.value = '' : null;" onblur="this.value == '' ? this.value = 'Endereço Origem' : null;" required>
             </div>
             <div class="form-field">
                 <label for="endDestino">Endereço Destino</label>
-                <input type="text" name="endDestino" id="endDestino" placeholder="Endereço Destino" required />
+                <input type="text" name="endDestino" id="endDestino" value="{{ endDestino | safe }}" onfocus="this.value == '{{ endDestino }}' ? this.value = '' : null;" onblur="this.value == '' ? this.value = 'Endereço Destino' : null;" required />
             </div>
             <div>
                 <button type="submit" class="solid" id="busca-roteiro">Buscar Roteiro</button>
@@ -40,50 +40,102 @@
             </div>
             <div id="map"></div>
             <script>
-                function initMap() {
-                    // Cria um mapa e define a localização inicial
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        center: { lat: -23.550520, lng: -46.633308 }, // Centro de São Paulo
-                        zoom: 12
-                    });
-        
-                    // Carrega os dados da rota a partir do arquivo JSON
-                    fetch('dados.json')
-                        .then(response => response.json())
-                        .then(data => {
-                            // Cria uma instância do DirectionsService e do DirectionsRenderer
-                            var directionsService = new google.maps.DirectionsService();
-                            var directionsRenderer = new google.maps.DirectionsRenderer();
-                            directionsRenderer.setMap(map);
-        
-                            // Constrói a solicitação de rota
-                            var request = {
-                                origin: new google.maps.LatLng(data.start_location.lat, data.start_location.lng),
-                                destination: new google.maps.LatLng(data.end_location.lat, data.end_location.lng),
-                                waypoints: data.waypoints.map(function(point) {
-                                    return {
-                                        location: new google.maps.LatLng(point.lat, point.lng),
-                                        stopover: false
-                                    };
-                                }),
-                                travelMode: 'TRANSIT' // ou 'WALKING' se for uma rota a pé
-                            };
-        
-                            // Calcula e exibe a rota
-                            directionsService.route(request, function(result, status) {
-                                if (status === 'OK') {
-                                    directionsRenderer.setDirections(result);
-                                } else {
-                                    console.error('Erro ao calcular a rota: ' + status);
-                                }
-                            });
-                        })
-                        .catch(error => console.error('Erro ao carregar dados JSON:', error));
-                }
-        
-                // Inicializa o mapa quando a página carrega
-                window.onload = initMap;
-            </script>
+
+
+function createLines(map, pontos) {
+  const directionsService = new google.maps.DirectionsService();
+
+  for (let i = 0; i < pontos.length - 1; i++) {
+    const start = pontos[i];
+    const end = pontos[i + 1];
+
+    const request = {
+      origin: start,
+      destination: end,
+      travelMode: google.maps.TravelMode.TRANSIT
+    };
+
+    directionsService.route(request, (response, status) => {
+      if (status   
+ === 'OK') {
+        const path = response.routes[0].overview_path;
+        const line = new google.maps.Polyline({
+          path:   
+ path,
+          strokeColor: '#1e88e5',
+          strokeOpacity: 5.0,
+          strokeWeight: 4
+        });
+        line.setMap(map);
+      } 
+    });
+  }
+}
+
+
+async function initMap() {
+  // Cria um mapa e define a localização inicial
+  const mapElement = document.getElementById('map');
+  if (!mapElement) {
+    console.error('Elemento com ID "map" não encontrado.');
+    return;
+  }
+  const map = new google.maps.Map(mapElement, {
+    center: { lat: -23.550520, lng: -46.633308 }, // Centro de São Paulo
+    zoom: 12
+  });
+
+  try {
+    const response = await fetch('../files/pontos.json');
+    const data = await response.json();
+    const pontos = data;
+    const firstIcon = {url:'../icon_map/start.png',
+    size: new google.maps.Size(32, 32),
+    scaledSize: new google.maps.Size(24, 24)}; // URL do ícone para o primeiro marcador;
+  const lastIcon =  {url:'../icon_map/end.png',
+  size: new google.maps.Size(32, 32),
+  scaledSize: new google.maps.Size(24, 24)
+  }; // URL do ícone para o último marcador
+  const defaultIcon = {url:'../icon_map/default.png',
+  size: new google.maps.Size(32, 32),
+  scaledSize: new google.maps.Size(24, 24)
+  }; // URL do ícone para os demais marcadores
+  
+
+    // Adiciona marcadores ao mapa
+    for (let i = 0; i < pontos.length; i++) {
+        const icon = i === 0 ? firstIcon : i === pontos.length - 1 ? lastIcon : defaultIcon;
+      if (!map) {
+        console.error('Map is undefined');
+        return;
+      }
+
+      const marker = new google.maps.Marker({
+        map: map,
+        position: { lat: pontos[i].lat, lng: pontos[i].lng },
+        icon: icon
+      });
+      
+      createLines(map,pontos)
+      // Calcular e ajustar o zoom
+    const bounds = new google.maps.LatLngBounds();
+    pontos.forEach(ponto => {
+      bounds.extend({ lat: ponto.lat, lng: ponto.lng });
+    });
+    map.fitBounds(bounds);
+
+    }
+  } catch (error) {
+    console.error('Erro ao carregar ou processar o arquivo JSON:', error);
+  }
+}
+
+
+
+window.onload = initMap;
+
+        </script>
+
         </div>
     
     </div>

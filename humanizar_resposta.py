@@ -3,8 +3,7 @@ import google.generativeai as genai
 import os
 import re
 from dotenv import load_dotenv
-import json
-import ast
+
 load_dotenv()
 
 class HumanizaResposta:
