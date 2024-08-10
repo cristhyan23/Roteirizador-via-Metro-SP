@@ -30,13 +30,15 @@
         </form>
 
         <div class="content">
+            
             <div id="roteiro">
+                <h3>Roteiro Gerado:</h3>
                 {% if roteiro %}
-                    <h3>Roteiro Gerado:</h3>
                     <div>{{ roteiro | safe }}</div>
                 {% endif %}
+                
             </div>
-            <div id="map"></div> <!-- Ajuste o tamanho conforme necessário -->
+            <div id="map"></div>
             <script>
                 function initMap() {
                     // Cria um mapa e define a localização inicial
@@ -83,6 +85,7 @@
                 window.onload = initMap;
             </script>
         </div>
+    
     </div>
  </body>
 </html>
